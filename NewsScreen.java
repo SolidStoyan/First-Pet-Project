@@ -1,6 +1,5 @@
 package menuPackage;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.io.*;
 import java.nio.file.*;
@@ -17,34 +16,24 @@ import org.jsoup.select.Elements;
 
 import java.awt.CardLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
-
 import javax.swing.JTextArea;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.DropMode;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JOptionPane;
-import java.awt.ScrollPane;
-import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Color;
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,15 +43,12 @@ import java.awt.Insets;
 import java.awt.RenderingHints;
 
 import javax.swing.ScrollPaneConstants;
-import javax.swing.border.LineBorder;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-import javax.swing.text.html.HTML;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import net.miginfocom.swing.MigLayout;
-import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 public class NewsScreen extends JFrame {
@@ -87,15 +73,13 @@ public class NewsScreen extends JFrame {
 	private JTextPane lblImageText;
 	private JButton btnNextImage;
 	private static List<String> imageTextList = new ArrayList<String>();
-	private static List<String> circularArray;
 	private static List<String> imageLinksList = new ArrayList<String>();
 	private static List<String> imageDirectoryLinks = new ArrayList<String>();
 	private int imageTextCount = 0;
 	private int imageCount = 0;
 	
-//	MyCircularArray arrayObj = new MyCircularArray(4);
 	
-	
+	//Function for scaling the image so it fits the panel
 	private void getScaledImage(int ImageNumber) {
 		
 		int maxWidth = 900;
@@ -109,10 +93,6 @@ public class NewsScreen extends JFrame {
 			
 			image = ImageIO.read(getClass().getResource("/Resources/Images/Image"+ImageNumber+".jpg"));
 			
-//			Image image = imageIcon.getImage(); // transform it 
-//			Image newimg = image.getScaledInstance(w, h,  java.awt.Image.SCALE_DEFAULT); // scale it the smooth way  
-//			imageIcon = new ImageIcon(newimg);  // transform it back
-//			lblImage.setIcon(imageIcon);
 		}
 		catch(Exception e) {
 			
@@ -140,7 +120,7 @@ public class NewsScreen extends JFrame {
 	        newHeight = (int)(((float)priorHeight/(float)priorWidth)*(float)newWidth);
 	    }
 	    
-	 // 1. Create a new Buffered Image and Graphic2D object
+	    // 1. Create a new Buffered Image and Graphic2D object
 	    BufferedImage resizedImg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
 	    Graphics2D g2 = resizedImg.createGraphics();
 
@@ -153,11 +133,12 @@ public class NewsScreen extends JFrame {
 	}
 	
 	
+	//A function which deletes all of the old images on startup and upon clicking the back button
 	private static void deleteOldImages() {
 
 		
 		try {
-			final String directory = new String("C:\\Users\\StoyanPC\\eclipse-workspace\\PetProject\\bin\\Resources\\Images\\");
+			final String directory = System.getProperty("user.dir")+"\\bin\\Resources\\Images\\";
 			DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(directory));
 			List<String> fileNames = new ArrayList<>();
 			
@@ -192,17 +173,18 @@ public class NewsScreen extends JFrame {
 	}
 	
 	
-	private void getImages(List<String> links) {
+	//Downloads the image files, from their respective links, to the Images folder
+	private void getImages() {
 		
 		
 		try {
-			final URL folderPath = NewsScreen.class.getResource("Resources/Images/");
+			final String folderPath = System.getProperty("user.dir")+"\\bin\\Resources\\Images\\";
 			
-			for(int count=0; count < links.size(); count++) {
+			for(int count=0; count < imageLinksList.size(); count++) {
 				
-				URL imageURL = new URL(links.get(count).toString());
+				URL imageURL = new URL(imageLinksList.get(count).toString());
 				InputStream in = imageURL.openStream();
-				OutputStream out = new BufferedOutputStream(new FileOutputStream(folderPath.toString()+"Image"+count+".jpg"));
+				OutputStream out = new BufferedOutputStream(new FileOutputStream(folderPath+"Image"+count+".jpg"));
 				
 				 for (int b; (b = in.read()) != -1;) {
 					 out.write(b);				
@@ -236,6 +218,9 @@ public class NewsScreen extends JFrame {
 		
 	}
 	
+	//The functions below are the main logic used when the user flips between the images and their respective text or quote.
+	//The idea is that both the image and text lists are able to loop on themselves when the user reaches the end and clicks
+	//the next image button or is at the beginning and clicks the previous image button.
 	private void getNextImage() {
 		
 		imageCount = imageCount + 1;
@@ -248,7 +233,6 @@ public class NewsScreen extends JFrame {
 			getScaledImage(imageCount);
 		}
 	}
-	
 	
 	private void getPreviousImage() {
 		
@@ -265,54 +249,20 @@ public class NewsScreen extends JFrame {
 	
 	}
 	
-	private void removeButtonsIfTextListLengthIsOne() {
-		
-		if(imageTextList.size() == 1 && imageLinksList.size() == 1 
-		|| imageTextList.isEmpty() && imageLinksList.isEmpty()) {
-			
-			panelNextBackImage.remove(btnNextImage);
-			panelNextBackImage.remove(btnPreviousImage);
-//			panelNextBackImage.setLayout(new GridLayout(1, 1, 0, 0));
-
-		}
-		else {
-			
-			btnPreviousImage.setEnabled(true);
-			btnNextImage.setEnabled(true);
-		}
-	}
-	
-//	private List<String> setCircularArray() {
-//		
-//		int listSize = imageTextList.size();
-//		MyCircularArray arrayObj = new MyCircularArray(listSize);
-//		int i = 0;
-//		while(i < imageTextList.size()) {
-//			
-//			arrayObj.setElement(i, imageTextList.get(i));
-//			i++;
-//		}
-//		
-//		return arrayObj.getArrayList();
-//		
-//	}
-	
 	private void getNextImageText() {
 		
 		if(!imageTextList.isEmpty()) {
 			
 			imageTextCount = imageTextCount + 1;
-	//		lblImageText.setText(arrayObj.getElement(count));
 			
 			if(imageTextCount > imageTextList.size() - 1) { 
 				
 				imageTextCount = 0;
-//				checkImageTextLength(imageTextCount);
 				lblImageText.setText(imageTextList.get(imageTextCount));
 			}
 			else {
-				lblImageText.setText(imageTextList.get(imageTextCount));
-//				checkImageTextLength(imageTextCount);
+				
+				lblImageText.setText(imageTextList.get(imageTextCount));			
 			}
 		}
 		 
@@ -327,34 +277,50 @@ public class NewsScreen extends JFrame {
 			if(imageTextCount == 0) {
 				
 				imageTextCount = imageTextList.size() - 1;
-//				checkImageTextLength(imageTextCount);
 				lblImageText.setText(imageTextList.get(imageTextCount));
-	//			lblImageText.setText(arrayObj.getElement(count));
 			}
 			else {
 				
 				imageTextCount = imageTextCount - 1;
-//				checkImageTextLength(imageTextCount);
 				lblImageText.setText(imageTextList.get(imageTextCount));
-	//			lblImageText.setText(arrayObj.getElement(count));
 			}
 		}
 	}
 	
+	
+	//Removes both buttons if there is only one image and quote and if both are empty. 
+	//Enables them if there are images, but no quotes.
+	private void removeLeftRightButtons() {
+		
+		if(imageTextList.size() == 1 && imageLinksList.size() == 1) {
+			
+			panelNextBackImage.remove(btnNextImage);
+			panelNextBackImage.remove(btnPreviousImage);
+
+		}
+		else if(imageTextList.isEmpty() && imageLinksList.isEmpty()) {
+			
+			panelNextBackImage.remove(btnNextImage);
+			panelNextBackImage.remove(btnPreviousImage);
+		}
+		else if(imageTextList.isEmpty() && !imageLinksList.isEmpty()) {
+			
+			btnPreviousImage.setEnabled(true);
+			btnNextImage.setEnabled(true);
+		}
+		else {
+			
+			btnPreviousImage.setEnabled(true);
+			btnNextImage.setEnabled(true);
+		}
+	}
+	
+	//Function which fills out a list with each image's web link.
 	public static void getSpecificNewsImagesLinks(Document specificNewsDoc) {
 		
 		String newLink;
-		
 		Document doc = specificNewsDoc;
-//		Elements imageLinks = doc.select("div.story-body__inner img");
 		Elements diffImageLinks = doc.select("div.story-body__inner div.js-delayed-image-load");
-		
-//		for(Element imageLink : imageLinks) {
-//			
-//			
-//			newLink = (imageLink.attr("src").replaceAll("/320/", "/900/"));
-//			imageLinksList.add(newLink);
-//		}
 		
 		for(Element diffImageLink : diffImageLinks) {
 			
@@ -370,14 +336,13 @@ public class NewsScreen extends JFrame {
 		
 	}
 	
+	//Fills out a list with each image text or quote
 	public static void getSpecificNewsImageText(Document specificNewsDoc) {
 		
 		Document doc = specificNewsDoc;
 		Elements imageLinks = doc.select("div.story-body__inner div.js-delayed-image-load");
-//		Elements diffImageTexts = doc.select("div.story-body__inner span.media-caption__text");
 		
 		for(Element imageLink : imageLinks) {
-			
 			
 			if(!imageLink.attr("data-src").contains("_98950366_presentational_grey_line464-nc") && !imageLink.attr("data-src").contains("_007_in_numbers_624") && !imageLink.attr("data-src").contains("_line")) {
 				
@@ -385,16 +350,12 @@ public class NewsScreen extends JFrame {
 			}
 			
 		}
-		
-//		for(Element diffImageText : diffImageTexts) {
-//			
-//			imageTextList.add(diffImageText.text());
-//		}
 		System.out.println(imageTextList.toString());
 		
 	}
 	
 	
+	//Function used to write on the main titles screen.
 	private void fillHubNewsInfo(String msg,int count) {
 		
 		switch(count) {
@@ -435,7 +396,7 @@ public class NewsScreen extends JFrame {
     	}
     }
 	
-	
+	//Used when the user clicks on a specific article, to write the main text of that article.
 	private Document getSpecificNews(Document doc, int choice) {
 		try {
 			
@@ -542,6 +503,7 @@ public class NewsScreen extends JFrame {
 		
 	}
 	
+	//Returns the main file of the BBC World hub website.
 	private Document getSiteInfo(){
 		
 		try {
@@ -559,6 +521,7 @@ public class NewsScreen extends JFrame {
 		
 	}
 	
+	//This function writes the date, title and section(if given) of each article.
 	private void fillTextAreas(Document doc) {
 		
 		
@@ -594,22 +557,6 @@ public class NewsScreen extends JFrame {
 		}
 	}
 	
-	
-//	private void checkImageTextLength(int count) {
-//		
-//		if(!imageTextList.isEmpty()) {
-//			
-//		
-//			if(imageTextList.get(count).length() < 30) {
-//				
-//				lblImageText.setText("	"+imageTextList.get(count));
-//			}
-//			else {
-//				
-//				lblImageText.setText(imageTextList.get(count));
-//			}
-//		}
-//	}
 	
 
 	/**
@@ -663,14 +610,6 @@ public class NewsScreen extends JFrame {
 		gbl_specificNews.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		specificNews.setLayout(gbl_specificNews);
 		
-//		imagePanel = new JPanel();
-//		imagePanel.setBackground(Color.WHITE);
-//		GridBagConstraints gbc_panel = new GridBagConstraints();
-//		gbc_panel.insets = new Insets(0, 0, 5, 0);
-//		gbc_panel.fill = GridBagConstraints.BOTH;
-//		gbc_panel.gridx = 0;
-//		gbc_panel.gridy = 0;
-//		specificNews.add(imagePanel, gbc_panel);
 		
 		lblImage = new JLabel("");
 		lblImage.setVerticalAlignment(SwingConstants.TOP);
@@ -687,7 +626,7 @@ public class NewsScreen extends JFrame {
 		specificNews.add(lblImage, gbc_lblImage);
 		
 		
-		//Creating the panel that houses the buttons which select between the images and the image's text
+		//Creating the panel that houses the buttons which select between the images and the exact image text
 		panelNextBackImage = new JPanel();
 		panelNextBackImage.setBackground(Color.WHITE);
 		GridBagConstraints gbc_panelNextBackImage = new GridBagConstraints();
@@ -701,8 +640,15 @@ public class NewsScreen extends JFrame {
 		btnPreviousImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				getPreviousImage();
-				getPreviousImageText();
+				if(!imageLinksList.isEmpty() && !imageTextList.isEmpty()) {
+					
+					getPreviousImage();
+					getPreviousImageText();
+				}
+				else {
+					
+					getPreviousImage();
+				}
 			}
 		});
 		btnPreviousImage.setBackground(Color.WHITE);
@@ -722,8 +668,16 @@ public class NewsScreen extends JFrame {
 		btnNextImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				getNextImage();
-				getNextImageText();
+				if(!imageLinksList.isEmpty() && !imageTextList.isEmpty()) {
+					
+					getNextImage();
+					getNextImageText();
+				}
+				else {
+					
+					getNextImage();
+				}
+				
 			}
 		});
 		btnNextImage.setForeground(Color.WHITE);
@@ -766,8 +720,7 @@ public class NewsScreen extends JFrame {
 				specificNewsArea.setText(null);
 				lblImage.setIcon(null);
 				deleteOldImages();
-//				circularArray.clear();
-//				arrayObj.clearCircularArray();
+				imageLinksList.clear();
 				imageTextList.clear();
 				imageDirectoryLinks.clear();
 				imageCount = 0;
@@ -776,7 +729,7 @@ public class NewsScreen extends JFrame {
 			}
 		});
 		
-		
+		//Creating the six rows for the titles and their details, along with their mouse listeners
 		newsOne = new JTextArea();
 		mainNews.add(newsOne);
 		newsOne.setFont(new Font("Monospaced", Font.PLAIN, 20));
@@ -790,21 +743,26 @@ public class NewsScreen extends JFrame {
 				
 				Document specificDoc = getSpecificNews(doc, 1);
 				getSpecificNewsImagesLinks(specificDoc);
+				getSpecificNewsImageText(specificDoc);
 				
-				if(!imageLinksList.isEmpty()) {
+				if(!imageLinksList.isEmpty() && !imageTextList.isEmpty()) {
 					
-					getImages(imageLinksList);
+					getImages();
 					getScaledImage(imageCount);
-					getSpecificNewsImageText(specificDoc);
 					lblImageText.setText(imageTextList.get(0));
-	//				circularArray = setCircularArray();
-					removeButtonsIfTextListLengthIsOne();
+					removeLeftRightButtons();
+				}
+				else if(imageTextList.isEmpty() && !imageLinksList.isEmpty()) {
+					
+					getImages();
+					getScaledImage(imageCount);
+					removeLeftRightButtons();
 				}
 				else {
 					
 					lblImage.setIcon(new ImageIcon(NewsScreen.class.getResource("/Resources/Images/WhoopsNoImagesError.jpg")));
 					lblImageText.setText("Whoops! No images appear to have been found!");
-					removeButtonsIfTextListLengthIsOne();
+					removeLeftRightButtons();
 				}
 				cardLayout.show(containerPane, "Spec");
 			}
@@ -831,14 +789,29 @@ public class NewsScreen extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
-				Document specificDoc = getSpecificNews(doc, 2);	
+				Document specificDoc = getSpecificNews(doc, 2);
 				getSpecificNewsImagesLinks(specificDoc);
-				getImages(imageLinksList);
-				getScaledImage(imageCount);
 				getSpecificNewsImageText(specificDoc);
-				lblImageText.setText(imageTextList.get(0));
-//				circularArray = setCircularArray();
-				removeButtonsIfTextListLengthIsOne();
+				
+				if(!imageLinksList.isEmpty() && !imageTextList.isEmpty()) {
+					
+					getImages();
+					getScaledImage(imageCount);
+					lblImageText.setText(imageTextList.get(0));
+					removeLeftRightButtons();
+				}
+				else if(imageTextList.isEmpty() && !imageLinksList.isEmpty()) {
+					
+					getImages();
+					getScaledImage(imageCount);
+					removeLeftRightButtons();
+				}
+				else {
+					
+					lblImage.setIcon(new ImageIcon(NewsScreen.class.getResource("/Resources/Images/WhoopsNoImagesError.jpg")));
+					lblImageText.setText("Whoops! No images appear to have been found!");
+					removeLeftRightButtons();
+				}
 				cardLayout.show(containerPane, "Spec");
 			}
 			@Override
@@ -866,12 +839,27 @@ public class NewsScreen extends JFrame {
 				
 				Document specificDoc = getSpecificNews(doc, 3);
 				getSpecificNewsImagesLinks(specificDoc);
-				getImages(imageLinksList);
-				getScaledImage(imageCount);
 				getSpecificNewsImageText(specificDoc);
-				lblImageText.setText(imageTextList.get(0));
-//				circularArray = setCircularArray();
-				removeButtonsIfTextListLengthIsOne();
+				
+				if(!imageLinksList.isEmpty() && !imageTextList.isEmpty()) {
+					
+					getImages();
+					getScaledImage(imageCount);
+					lblImageText.setText(imageTextList.get(0));
+					removeLeftRightButtons();
+				}
+				else if(imageTextList.isEmpty() && !imageLinksList.isEmpty()) {
+					
+					getImages();
+					getScaledImage(imageCount);
+					removeLeftRightButtons();
+				}
+				else {
+					
+					lblImage.setIcon(new ImageIcon(NewsScreen.class.getResource("/Resources/Images/WhoopsNoImagesError.jpg")));
+					lblImageText.setText("Whoops! No images appear to have been found!");
+					removeLeftRightButtons();
+				}
 				cardLayout.show(containerPane, "Spec");
 			}
 			@Override
@@ -899,12 +887,27 @@ public class NewsScreen extends JFrame {
 				
 				Document specificDoc = getSpecificNews(doc, 4);
 				getSpecificNewsImagesLinks(specificDoc);
-				getImages(imageLinksList);
-				getScaledImage(imageCount);
 				getSpecificNewsImageText(specificDoc);
-				lblImageText.setText(imageTextList.get(0));
-//				circularArray = setCircularArray();
-				removeButtonsIfTextListLengthIsOne();
+				
+				if(!imageLinksList.isEmpty() && !imageTextList.isEmpty()) {
+					
+					getImages();
+					getScaledImage(imageCount);
+					lblImageText.setText(imageTextList.get(0));
+					removeLeftRightButtons();
+				}
+				else if(imageTextList.isEmpty() && !imageLinksList.isEmpty()) {
+					
+					getImages();
+					getScaledImage(imageCount);
+					removeLeftRightButtons();
+				}
+				else {
+					
+					lblImage.setIcon(new ImageIcon(NewsScreen.class.getResource("/Resources/Images/WhoopsNoImagesError.jpg")));
+					lblImageText.setText("Whoops! No images appear to have been found!");
+					removeLeftRightButtons();
+				}
 				cardLayout.show(containerPane, "Spec");
 			}
 			@Override
@@ -932,12 +935,27 @@ public class NewsScreen extends JFrame {
 				
 				Document specificDoc = getSpecificNews(doc, 5);
 				getSpecificNewsImagesLinks(specificDoc);
-				getImages(imageLinksList);
-				getScaledImage(imageCount);
 				getSpecificNewsImageText(specificDoc);
-				lblImageText.setText(imageTextList.get(0));
-//				circularArray = setCircularArray();
-				removeButtonsIfTextListLengthIsOne();
+				
+				if(!imageLinksList.isEmpty() && !imageTextList.isEmpty()) {
+					
+					getImages();
+					getScaledImage(imageCount);
+					lblImageText.setText(imageTextList.get(0));
+					removeLeftRightButtons();
+				}
+				else if(imageTextList.isEmpty() && !imageLinksList.isEmpty()) {
+					
+					getImages();
+					getScaledImage(imageCount);
+					removeLeftRightButtons();
+				}
+				else {
+					
+					lblImage.setIcon(new ImageIcon(NewsScreen.class.getResource("/Resources/Images/WhoopsNoImagesError.jpg")));
+					lblImageText.setText("Whoops! No images appear to have been found!");
+					removeLeftRightButtons();
+				}
 				cardLayout.show(containerPane, "Spec");
 			}
 			@Override
@@ -965,12 +983,27 @@ public class NewsScreen extends JFrame {
 				
 				Document specificDoc = getSpecificNews(doc, 6);
 				getSpecificNewsImagesLinks(specificDoc);
-				getImages(imageLinksList);
-				getScaledImage(imageCount);
 				getSpecificNewsImageText(specificDoc);
-				lblImageText.setText(imageTextList.get(0));
-//				circularArray = setCircularArray();
-				removeButtonsIfTextListLengthIsOne();
+				
+				if(!imageLinksList.isEmpty() && !imageTextList.isEmpty()) {
+					
+					getImages();
+					getScaledImage(imageCount);
+					lblImageText.setText(imageTextList.get(0));
+					removeLeftRightButtons();
+				}
+				else if(imageTextList.isEmpty() && !imageLinksList.isEmpty()) {
+					
+					getImages();
+					getScaledImage(imageCount);
+					removeLeftRightButtons();
+				}
+				else {
+					
+					lblImage.setIcon(new ImageIcon(NewsScreen.class.getResource("/Resources/Images/WhoopsNoImagesError.jpg")));
+					lblImageText.setText("Whoops! No images appear to have been found!");
+					removeLeftRightButtons();
+				}
 				cardLayout.show(containerPane, "Spec");
 			}
 			@Override
@@ -985,12 +1018,7 @@ public class NewsScreen extends JFrame {
 			}
 		});
 		fillTextAreas(doc);
-//		int setImageTextChoice = 0;
-		
-		
-		
-		//getSiteInfo();
-		//getSpecificNews(getSiteInfo(), 1);
+
 	}
 
 }
