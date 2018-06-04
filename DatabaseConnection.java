@@ -56,7 +56,8 @@ public class DatabaseConnection
 			
 		}
 		catch(Exception ex) {
-			JOptionPane.showMessageDialog(null, "The following error has occured: " +ex);
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null, "The following username already exists!");
 			
 		}
 		finally {
