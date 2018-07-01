@@ -88,10 +88,14 @@ public class NewsScreen extends JFrame {
 	    int priorHeight = 0, priorWidth = 0;
 	    BufferedImage image = null;
 		ImageIcon imageIcon;
+		System.out.println(imageDirectoryLinks);
 		
 		try {
 			
-			image = ImageIO.read(getClass().getResource("/Resources/Images/Image"+ImageNumber+".jpg"));
+			File file = new File(System.getProperty("user.dir")+"\\bin\\Resources\\Images\\Image"+ImageNumber+".jpg");
+			image = ImageIO.read(file);
+//			image = ImageIO.read(NewsScreen.class.getResource("/Resources/Images/Image"+ImageNumber+".jpg"));
+			
 			
 		}
 		catch(Exception e) {
@@ -120,7 +124,7 @@ public class NewsScreen extends JFrame {
 	        newHeight = (int)(((float)priorHeight/(float)priorWidth)*(float)newWidth);
 	    }
 	    
-	    // 1. Create a new Buffered Image and Graphic2D object
+	 // 1. Create a new Buffered Image and Graphic2D object
 	    BufferedImage resizedImg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
 	    Graphics2D g2 = resizedImg.createGraphics();
 
@@ -294,14 +298,17 @@ public class NewsScreen extends JFrame {
 		
 		if(imageTextList.size() == 1 && imageLinksList.size() == 1) {
 			
-			panelNextBackImage.remove(btnNextImage);
-			panelNextBackImage.remove(btnPreviousImage);
-
+//			panelNextBackImage.remove(btnNextImage);
+//			panelNextBackImage.remove(btnPreviousImage);
+			btnPreviousImage.setEnabled(false);
+			btnNextImage.setEnabled(false);
 		}
 		else if(imageTextList.isEmpty() && imageLinksList.isEmpty()) {
 			
-			panelNextBackImage.remove(btnNextImage);
-			panelNextBackImage.remove(btnPreviousImage);
+//			panelNextBackImage.remove(btnNextImage);
+//			panelNextBackImage.remove(btnPreviousImage);
+			btnPreviousImage.setEnabled(false);
+			btnNextImage.setEnabled(false);
 		}
 		else if(imageTextList.isEmpty() && !imageLinksList.isEmpty()) {
 			
@@ -725,6 +732,8 @@ public class NewsScreen extends JFrame {
 				imageDirectoryLinks.clear();
 				imageCount = 0;
 				imageTextCount = 0;
+				btnPreviousImage.setEnabled(true);
+				btnNextImage.setEnabled(true);
 				cardLayout.show(containerPane, "Hub");
 			}
 		});
@@ -760,7 +769,7 @@ public class NewsScreen extends JFrame {
 				}
 				else {
 					
-					lblImage.setIcon(new ImageIcon(NewsScreen.class.getResource("/Resources/Images/WhoopsNoImagesError.jpg")));
+					lblImage.setIcon(new ImageIcon(System.getProperty("user.dir")+"\\bin\\Resources\\Images\\WhoopsNoImagesError.jpg"));
 					lblImageText.setText("Whoops! No images appear to have been found!");
 					removeLeftRightButtons();
 				}
@@ -808,7 +817,7 @@ public class NewsScreen extends JFrame {
 				}
 				else {
 					
-					lblImage.setIcon(new ImageIcon(NewsScreen.class.getResource("/Resources/Images/WhoopsNoImagesError.jpg")));
+					lblImage.setIcon(new ImageIcon(System.getProperty("user.dir")+"\\bin\\Resources\\Images\\WhoopsNoImagesError.jpg"));
 					lblImageText.setText("Whoops! No images appear to have been found!");
 					removeLeftRightButtons();
 				}
@@ -856,7 +865,7 @@ public class NewsScreen extends JFrame {
 				}
 				else {
 					
-					lblImage.setIcon(new ImageIcon(NewsScreen.class.getResource("/Resources/Images/WhoopsNoImagesError.jpg")));
+					lblImage.setIcon(new ImageIcon(System.getProperty("user.dir")+"\\bin\\Resources\\Images\\WhoopsNoImagesError.jpg"));
 					lblImageText.setText("Whoops! No images appear to have been found!");
 					removeLeftRightButtons();
 				}
@@ -904,7 +913,7 @@ public class NewsScreen extends JFrame {
 				}
 				else {
 					
-					lblImage.setIcon(new ImageIcon(NewsScreen.class.getResource("/Resources/Images/WhoopsNoImagesError.jpg")));
+					lblImage.setIcon(new ImageIcon(System.getProperty("user.dir")+"\\bin\\Resources\\Images\\WhoopsNoImagesError.jpg"));
 					lblImageText.setText("Whoops! No images appear to have been found!");
 					removeLeftRightButtons();
 				}
@@ -952,7 +961,7 @@ public class NewsScreen extends JFrame {
 				}
 				else {
 					
-					lblImage.setIcon(new ImageIcon(NewsScreen.class.getResource("/Resources/Images/WhoopsNoImagesError.jpg")));
+					lblImage.setIcon(new ImageIcon(System.getProperty("user.dir")+"\\bin\\Resources\\Images\\WhoopsNoImagesError.jpg"));
 					lblImageText.setText("Whoops! No images appear to have been found!");
 					removeLeftRightButtons();
 				}
@@ -1000,7 +1009,7 @@ public class NewsScreen extends JFrame {
 				}
 				else {
 					
-					lblImage.setIcon(new ImageIcon(NewsScreen.class.getResource("/Resources/Images/WhoopsNoImagesError.jpg")));
+					lblImage.setIcon(new ImageIcon(System.getProperty("user.dir")+"\\bin\\Resources\\Images\\WhoopsNoImagesError.jpg"));
 					lblImageText.setText("Whoops! No images appear to have been found!");
 					removeLeftRightButtons();
 				}
