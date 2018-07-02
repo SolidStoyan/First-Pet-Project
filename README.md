@@ -20,4 +20,8 @@ The main features of the program to this moment are the login system, the calcul
 - Calculator - a calculator with an interface that works on the same principle as the windows standart calculator. That is to say that the expression that is calculated does not take sign positions and order in account. It calculates the first two numbers and then uses the result of that calculation to continue on with the expression.
 
  - News program - a program which shows six current news headlines from the BBC - World website. When the user clicks on a headline it shows him the entire article. The article's photos are also showed along with their specific text,under each image. If the program does not find images to use then it uses a stock error image since certain articles do not use the same html image tags that the program searches for. The JSoup library is used for selecting the data from the html files of the website.
+ 
+ Test
+ 
+ The Pet Project Test archive can be downloaded to test the functionality of the programmes. It contains the three jar files that execute the calculator, news screen and login systems along with their respective resources.
 
