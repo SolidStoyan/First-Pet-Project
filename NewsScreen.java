@@ -772,6 +772,10 @@ public class NewsScreen extends JFrame {
 					lblImage.setIcon(new ImageIcon(System.getProperty("user.dir")+"\\bin\\Resources\\Images\\WhoopsNoImagesError.jpg"));
 					lblImageText.setText("Whoops! No images appear to have been found!");
 					removeLeftRightButtons();
+					if(specificNewsArea.getText() == "") {
+						
+						specificNewsArea.append("No text from the article has been found!");
+					}
 				}
 				cardLayout.show(containerPane, "Spec");
 			}
@@ -820,6 +824,10 @@ public class NewsScreen extends JFrame {
 					lblImage.setIcon(new ImageIcon(System.getProperty("user.dir")+"\\bin\\Resources\\Images\\WhoopsNoImagesError.jpg"));
 					lblImageText.setText("Whoops! No images appear to have been found!");
 					removeLeftRightButtons();
+					if(specificNewsArea.getText() == "") {
+						
+						specificNewsArea.append("No text from the article has been found!");
+					}
 				}
 				cardLayout.show(containerPane, "Spec");
 			}
@@ -868,6 +876,10 @@ public class NewsScreen extends JFrame {
 					lblImage.setIcon(new ImageIcon(System.getProperty("user.dir")+"\\bin\\Resources\\Images\\WhoopsNoImagesError.jpg"));
 					lblImageText.setText("Whoops! No images appear to have been found!");
 					removeLeftRightButtons();
+					if(specificNewsArea.getText() == "") {
+						
+						specificNewsArea.append("No text from the article has been found!");
+					}
 				}
 				cardLayout.show(containerPane, "Spec");
 			}
@@ -916,6 +928,10 @@ public class NewsScreen extends JFrame {
 					lblImage.setIcon(new ImageIcon(System.getProperty("user.dir")+"\\bin\\Resources\\Images\\WhoopsNoImagesError.jpg"));
 					lblImageText.setText("Whoops! No images appear to have been found!");
 					removeLeftRightButtons();
+					if(specificNewsArea.getText() == "") {
+						
+						specificNewsArea.append("No text from the article has been found!");
+					}
 				}
 				cardLayout.show(containerPane, "Spec");
 			}
@@ -964,6 +980,10 @@ public class NewsScreen extends JFrame {
 					lblImage.setIcon(new ImageIcon(System.getProperty("user.dir")+"\\bin\\Resources\\Images\\WhoopsNoImagesError.jpg"));
 					lblImageText.setText("Whoops! No images appear to have been found!");
 					removeLeftRightButtons();
+					if(specificNewsArea.getText() == "") {
+						
+						specificNewsArea.append("No text from the article has been found!");
+					}
 				}
 				cardLayout.show(containerPane, "Spec");
 			}
@@ -1012,6 +1032,10 @@ public class NewsScreen extends JFrame {
 					lblImage.setIcon(new ImageIcon(System.getProperty("user.dir")+"\\bin\\Resources\\Images\\WhoopsNoImagesError.jpg"));
 					lblImageText.setText("Whoops! No images appear to have been found!");
 					removeLeftRightButtons();
+					if(specificNewsArea.getText() == "") {
+						
+						specificNewsArea.append("No text from the article has been found!");
+					}
 				}
 				cardLayout.show(containerPane, "Spec");
 			}
@@ -1026,6 +1050,7 @@ public class NewsScreen extends JFrame {
 				newsSix.setFont(new Font("Monospaced", Font.PLAIN, 20));
 			}
 		});
+		//Inserts the article headlines, dates and categories
 		fillTextAreas(doc);
 
 	}

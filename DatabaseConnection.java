@@ -12,7 +12,7 @@ public class DatabaseConnection
 	public static Connection sqliteConnection() {
 		
 		try {
-			String url = "jdbc:sqlite:C:\\Users\\StoyanPC\\eclipse-workspace\\PetProject\\First.db";
+			String url = "jdbc:sqlite:"+System.getProperty("user.dir")+"\\src\\Resources\\Database\\First.db";
 			conn = DriverManager.getConnection(url);
 			JOptionPane.showMessageDialog(null, "Connection to the database has been successfully established.");
 			return conn;
@@ -23,18 +23,18 @@ public class DatabaseConnection
 			JOptionPane.showMessageDialog(null, "The following error has occured: " +e);
 			return null;
 		}
-		finally {
-			
-			/*try {
-			*	if (conn != null) {
-			*		
-			*		conn.close();
-			*	}
-			*}
-			*
-			*catch(Exception ex) {
-			*	JOptionPane.showMessageDialog(null, ex);
-			**/}
+//		finally {
+//			
+//			/*try {
+//			*	if (conn != null) {
+//			*		
+//			*		conn.close();
+//			*	}
+//			*}
+//			*
+//			*catch(Exception ex) {
+//			*	JOptionPane.showMessageDialog(null, ex);
+//			**/}
 		}
 	
 	

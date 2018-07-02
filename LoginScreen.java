@@ -70,8 +70,6 @@ public class LoginScreen {
 	public LoginScreen() {
 		enteredUsername = "";
 		enteredPassword = new char[10];
-		//registeredUsername = "";
-		//registeredPassword = new char[10];
 		initialize();
 		
 	}
@@ -127,14 +125,9 @@ public class LoginScreen {
 		JButton btnLogin = new JButton("LOGIN");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//TransferClass transfer = TransferClass.getObj();
 				getEnteredUsername();
 				getEnteredPassword();
-				//registeredUsername = transfer.getRegUser();
-				//registeredPassword = transfer.getRegPass();
-				
-				//JOptionPane.showMessageDialog(null, "The passed username is " +registeredUsername);
-				//JOptionPane.showMessageDialog(null, "The passed password is " +registeredPassword);
+			
 				
 				if (enteredUsername.equals("") || enteredPassword.length==0) {
 					JOptionPane.showMessageDialog(frame, "Please enter a value in both fields!", "Blank fields error", JOptionPane.ERROR_MESSAGE);
